@@ -2,6 +2,7 @@
 
 require 'sinatra/base'
 require_relative '../services/jwt_service'
+require_relative '../repositories/user_accounts_repository'
 
 ## UserMiddleware
 class UserMiddleware < Sinatra::Base
@@ -13,7 +14,7 @@ class UserMiddleware < Sinatra::Base
   end
 
   def authenticate!
-    redirect '/account/log_in' unless @current_user
+    return invalid_user unless @current_user
   end
 
   def authorize!(*roles)
@@ -28,5 +29,12 @@ class UserMiddleware < Sinatra::Base
 
   def unnathenticate!(route = '/account/manage')
     redirect route if @current_user
+  end
+
+  private
+
+  def invalid_user
+    response.delete_cookie(:jwt_token)
+    redirect '/account/log_in'
   end
 end

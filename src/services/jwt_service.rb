@@ -19,7 +19,11 @@ module JWTService
   end
 
   def self.get_user(token)
-    decode(token)[0]
+    jwt_user = decode(token)[0]
+    jwt_user_id = jwt_user['user_id']
+
+    UserAccountsRepository.user_by_id(jwt_user_id)
+
     # user_id = jwt_user['id']
     # TODO: Get user in database
   rescue StandardError

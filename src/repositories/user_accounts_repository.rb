@@ -13,4 +13,8 @@ module UserAccountsRepository
 
     nil
   end
+
+  def self.user_by_id(id)
+    UserAccounts.find_by(id:)
+  end
 end

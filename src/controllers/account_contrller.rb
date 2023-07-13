@@ -83,11 +83,13 @@ class AccountController < UserMiddleware
     redirect '/account/manage'
   end
 
+  get '/account/confirm/:token' do
+  end
+
   get '/account/manage' do
     authenticate!
 
     @user = @current_user
-    puts @current_user
     erb :'accounts/manage'
   end
 end
