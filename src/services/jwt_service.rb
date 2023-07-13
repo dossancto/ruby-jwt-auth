@@ -20,7 +20,7 @@ module JWTService
 
   def self.get_user(token)
     jwt_user = decode(token)[0]
-    jwt_user_id = jwt_user['user_id']
+    jwt_user_id = jwt_user['id']
 
     UserAccountsRepository.user_by_id(jwt_user_id)
 

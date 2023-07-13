@@ -9,6 +9,7 @@ module UserAccountsRepository
   def self.user_from_email_password(email, password)
     user = UserAccounts.find_by(email:)
 
+    puts 'email not found' unless user
     return user if user && BCrypt::Password.new(user.password) == password
 
     nil

@@ -24,31 +24,19 @@ class AccountController < UserMiddleware
   end
 
   post '/account/register' do
-    request_user = {
-      user_id: 2,
-      user_name: params[:user_name],
-      email: params[:email],
-      password: BcryptService.encode_password(params[:password]),
-      roles: ['user']
-    }
-
     user = UserAccounts.new
 
-    user.user_name = request_user[:user_name]
-    user.password = request_user[:password]
-    user.email = request_user[:email]
+    user.user_name = params[:user_name]
+    user.password = BcryptService.encode_password(params[:password])
+    user.email = params[:email]
+    user.roles = ['admin', 'user']
 
     user.save
 
     token = JWTService.encode(user.as_json)
 
-    response.set_cookie(:jwt_token, {
-                          value: token,
-                          expires: Time.now + 3600,  # Expires in 1 hour
-                          path: '/',                 # Cookie available for all routes
-                          secure: true,              # Only send the cookie over HTTPS
-                          http_only: true            # Restrict cookie access to HTTP requests only
-                        })
+    set_jwt_cookie(token)
+
     status 201
 
     user_agent = request.user_agent
@@ -68,13 +56,8 @@ class AccountController < UserMiddleware
 
     token = JWTService.encode(user.as_json)
 
-    response.set_cookie(:jwt_token, {
-                          value: token,
-                          expires: Time.now + 3600,  # Expires in 1 hour
-                          path: '/',                 # Cookie available for all routes
-                          secure: true,              # Only send the cookie over HTTPS
-                          http_only: true            # Restrict cookie access to HTTP requests only
-                        })
+    set_jwt_cookie(token)
+
     status 200
     user_agent = request.user_agent
 
@@ -91,5 +74,15 @@ class AccountController < UserMiddleware
 
     @user = @current_user
     erb :'accounts/manage'
+  end
+
+  def set_jwt_cookie(token)
+    response.set_cookie(:jwt_token, {
+                          value: token,
+                          expires: Time.now + 3600,  # Expires in 1 hour
+                          path: '/',                 # Cookie available for all routes
+                          secure: true,              # Only send the cookie over HTTPS
+                          http_only: true            # Restrict cookie access to HTTP requests only
+                        })
   end
 end

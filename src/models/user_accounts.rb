@@ -5,5 +5,5 @@ require 'sinatra/activerecord'
 ## UserAccounts
 class UserAccounts < ActiveRecord::Base
   validates_presence_of :user_name, :password, :email
-  serialize :roles
+  # serialize :roles
 end

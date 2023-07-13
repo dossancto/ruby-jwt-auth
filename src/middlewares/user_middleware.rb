@@ -17,7 +17,7 @@ class UserMiddleware < Sinatra::Base
     return invalid_user unless @current_user
   end
 
-  def authorize!(*roles)
+  def authorize!(roles, route = '/')
     user_roles = @current_user['roles']
 
     has_access = user_roles.any? do |role|
