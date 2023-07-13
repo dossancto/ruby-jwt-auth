@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
+require_relative '../services/jwt_service'
 
 ## UserMiddleware
 class UserMiddleware < Sinatra::Base
@@ -23,5 +24,9 @@ class UserMiddleware < Sinatra::Base
     end
 
     redirect '/proibido' unless has_access
+  end
+
+  def unnathenticate!
+    redirect '/' if @current_user
   end
 end

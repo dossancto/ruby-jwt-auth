@@ -3,12 +3,14 @@
 require 'sinatra/base'
 require 'sinatra/contrib'
 require './src/controllers/admin_area_controller'
+require './src/controllers/public_area_controller'
 require './src/controllers/account_contrller'
 
 ## MyApp
 class MyApp < Sinatra::Base
   configure do
     enable :sessions
+    set :views, File.join(File.dirname(__FILE__), '/src/views')
   end
 
   get '/gen-token' do
@@ -28,4 +30,5 @@ class MyApp < Sinatra::Base
 
   use AdminAreaController
   use AccountController
+  use PublicAreaController
 end
