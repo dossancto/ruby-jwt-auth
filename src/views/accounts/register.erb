@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Post Form</title>
+    <title>Register</title>
   </head>
   <body>
-    <h1>Loggin</h1>
+    <h1>Register now</h1>
 
-    <form action="/account/log_in" method="POST">
+    <form action="/account/register" method="POST">
+      <label for="user_name">Username:</label>
+      <input type="text" id="user_name" name="user_name" required>
+
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" required>
 

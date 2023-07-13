@@ -1,0 +1,24 @@
+default: &default
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+  host: localhost
+  username: postgres
+  password: postgres
+
+development:
+  <<: *default
+  database: jwt_test_dev
+
+test:
+  <<: *default
+  database: jwt_test_test
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: <%= ENV['POSTGRES_DATABASE_HOST'] || 'db' %>
+  database: <%= ENV['POSTGRES_DATABASE_NAME'] || 'sinatra' %>
+  username: <%= ENV['POSTGRES_DATABASE_USER'] || 'sinatra' %>
+  password: <%= ENV['POSTGRES_DATABASE_PASSWORD'] || 'sinatra' %>

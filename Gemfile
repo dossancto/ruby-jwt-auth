@@ -20,3 +20,6 @@ gem "puma", "~> 6.3"
 gem "sinatra-contrib", "~> 3.0"
 
 gem "bcrypt", "~> 3.1"
+
+gem "pg", "~> 1.5"
+gem "sinatra-activerecord", "~> 2.0"

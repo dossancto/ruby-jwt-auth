@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+require 'bcrypt'
+require_relative '../models/user_accounts'
+require_relative '../services/bcrypt_service'
+
+## UserAccountsRepository
+module UserAccountsRepository
+  def self.user_from_email_password(email, password)
+    user = UserAccounts.find_by(email:)
+
+    return user if user && BCrypt::Password.new(user.password) == password
+
+    nil
+  end
+end

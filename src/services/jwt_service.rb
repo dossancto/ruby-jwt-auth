@@ -23,6 +23,7 @@ module JWTService
     # user_id = jwt_user['id']
     # TODO: Get user in database
   rescue StandardError
+    puts $!
     nil
   end
 

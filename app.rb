@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
+require 'sinatra/activerecord'
 require 'sinatra/contrib'
 require './src/controllers/admin_area_controller'
 require './src/controllers/public_area_controller'
@@ -8,9 +9,14 @@ require './src/controllers/account_contrller'
 
 ## MyApp
 class MyApp < Sinatra::Base
+  use AdminAreaController
+  use AccountController
+  use PublicAreaController
+
   configure do
     enable :sessions
     set :views, File.join(File.dirname(__FILE__), '/src/views')
+    set :database_file, 'config/database.yml'
   end
 
   get '/gen-token' do
@@ -28,7 +34,5 @@ class MyApp < Sinatra::Base
     'sucess'
   end
 
-  use AdminAreaController
-  use AccountController
-  use PublicAreaController
+  set :views, File.join(File.dirname(__FILE__), '/src/views')
 end
