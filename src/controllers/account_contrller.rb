@@ -33,11 +33,16 @@ class AccountController < UserMiddleware
                           secure: true,              # Only send the cookie over HTTPS
                           http_only: true            # Restrict cookie access to HTTP requests only
                         })
+    user_agent = request.user_agent
+
+    return token unless user_agent =~ /Mozilla|Chrome|Safari|Opera|Firefox/
 
     redirect '/account/manage'
   end
 
   get '/account/manage' do
+    authenticate!
+
     @user = @current_user
     puts @current_user
     erb :'accounts/manage'
