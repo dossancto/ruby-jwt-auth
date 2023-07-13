@@ -7,9 +7,9 @@
     <link href="css/style.css" rel="stylesheet">
   </head>
   <body>
-    <% @user['user_name'] %>
-    <% @user['email'] %>
-    <% @user['password'] %>
+    <p><%= @current_user['user_name'] %></p>
+    <p><%= @current_user['email'] %></p>
+    <p><%= @current_user['password'] %></p>
   
   </body>
 </html>

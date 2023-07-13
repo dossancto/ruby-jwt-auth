@@ -3,15 +3,15 @@
 require 'sinatra/base'
 require_relative '../middlewares/user_middleware'
 require_relative '../services/jwt_service'
+require_relative '../services/bcrypt_service'
 
 ## AdminAreaController
-class AccountController < Sinatra::Base
+class AccountController < UserMiddleware
   set :views, File.expand_path('../views', __dir__)
 
   get '/account/log_in' do
-    # unnathenticate!
+    unnathenticate!
 
-    # 'Pleace log in'
     erb :'accounts/index'
   end
 
@@ -20,7 +20,7 @@ class AccountController < Sinatra::Base
       user_id: 2,
       user_name: params[:user_name],
       email: params[:email],
-      password: params[:password],
+      password: BcryptService.encode_password(params[:password]),
       roles: %i[user]
     }
 
@@ -34,6 +34,12 @@ class AccountController < Sinatra::Base
                           http_only: true            # Restrict cookie access to HTTP requests only
                         })
 
-    redirect '/admin'
+    redirect '/account/manage'
+  end
+
+  get '/account/manage' do
+    @user = @current_user
+    puts @current_user
+    erb :'accounts/manage'
   end
 end

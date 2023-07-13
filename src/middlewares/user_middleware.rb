@@ -23,10 +23,10 @@ class UserMiddleware < Sinatra::Base
       roles.any? { |r| r.to_s == role.to_s }
     end
 
-    redirect '/proibido' unless has_access
+    redirect route unless has_access
   end
 
-  def unnathenticate!
-    redirect '/' if @current_user
+  def unnathenticate!(route = '/account/manage')
+    redirect route if @current_user
   end
 end

@@ -8,7 +8,7 @@ require_relative '../middlewares/user_middleware'
 class AdminAreaController < UserMiddleware
   before '/admin*' do
     authenticate!
-    authorize! :admin, :user
+    authorize! :admin
   end
 
   get '/admin' do

@@ -18,3 +18,5 @@ gem "rake", "~> 13.0"
 gem "puma", "~> 6.3"
 
 gem "sinatra-contrib", "~> 3.0"
+
+gem "bcrypt", "~> 3.1"
