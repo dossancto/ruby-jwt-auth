@@ -22,6 +22,8 @@ module JWTService
     decode(token)[0]
     # user_id = jwt_user['id']
     # TODO: Get user in database
+  rescue StandardError
+    nil
   end
 
   def self.valid_token?(token, user)

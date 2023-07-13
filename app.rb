@@ -5,13 +5,14 @@ require 'sinatra/contrib'
 require './src/controllers/admin_area_controller'
 require './src/controllers/account_contrller'
 
+## MyApp
 class MyApp < Sinatra::Base
   configure do
     enable :sessions
   end
 
   get '/gen-token' do
-    user = { user_id: 1, user_name: 'test', password: 'deus-da-morte' }
+    user = { user_id: 1, user_name: 'test', password: 'deus-da-morte', roles: %i[admin user] }
     token = JWTService.encode user
 
     response.set_cookie(:jwt_token, {
@@ -28,5 +29,3 @@ class MyApp < Sinatra::Base
   use AdminAreaController
   use AccountController
 end
-
-MyApp.run!

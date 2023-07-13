@@ -1,27 +1,17 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
-# require_relative '../middlewares/jwt_auth'
-require_relative '../services/jwt_service'
+require 'json'
+require_relative '../middlewares/user_middleware'
 
 ## AdminAreaController
-class AdminAreaController < Sinatra::Base
-  set(:auth) do |*_roles|
-    condition do
-      token = request.env['HTTP_AUTHORIZATION']&.split(' ')&.last
-      token ||= request.cookies['jwt_token']
-
-      redirect '/account/log_in' unless token
-
-      begin
-        redirect '/user-not-found' unless JWTService.get_user(token)
-      rescue StandardError
-        redirect '/invalid-token'
-      end
-    end
+class AdminAreaController < UserMiddleware
+  before '/admin*' do
+    authenticate!
+    authorize! :admin, :user
   end
 
-  get '/admin', auth: [:admin] do
-    'Autentucado'
+  get '/admin' do
+    @current_user.to_json
   end
 end
