@@ -25,3 +25,5 @@ gem "pg", "~> 1.5"
 gem "sinatra-activerecord", "~> 2.0"
 
 gem "rest-client", "~> 2.1"
+
+gem "sinatra-flash", "~> 0.3.0"

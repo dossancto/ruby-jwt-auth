@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
+require 'sinatra/flash'
 require 'sinatra/activerecord'
 require 'sinatra/contrib'
 require './src/controllers/admin_area_controller'
 require './src/controllers/public_area_controller'
 require './src/controllers/account_contrller'
+require './src/middlewares/user_middleware'
 
 ## MyApp
-class MyApp < Sinatra::Base
+class MyApp < UserMiddleware
   use AdminAreaController
   use AccountController
   use PublicAreaController
@@ -18,7 +20,7 @@ class MyApp < Sinatra::Base
     set :views, File.join(File.dirname(__FILE__), '/src/views')
     set :database_file, 'config/database.yml'
     set :public_folder, File.join(File.dirname(__FILE__), '/public')
-    puts File.join(File.dirname(__FILE__), '/public')
+    register Sinatra::Flash
   end
 
   get '/gen-token' do

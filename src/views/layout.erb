@@ -1,13 +1,16 @@
 <html>
   <head>
     <title>My Sinatra App</title>
+    <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles.css">
 
   </head>
   <body>
     <header>
-      <%= erb :nav %>
+      <%= erb :'/layout/nav' %>
     </header>
+
+      <%= erb :'layout/flashes' %>
 
       <div class="container mx-auto px-8">
           <%= yield %>

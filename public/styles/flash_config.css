@@ -1,0 +1,59 @@
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+  transform: translateX(0);
+  }
+  to {
+  transform: translateX(100%);
+  }
+}
+
+.card-hold{
+  position: absolute;
+  right: 0;
+}
+
+.base-card{
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  height: 50px;
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+}
+
+.card-success {
+  animation-name: slideIn;
+  background-color: #c6f6d5;
+  border-right: 4px solid #34d399;
+  color: #059669;
+}
+
+.card-info {
+  animation-name: slideIn;
+  background-color: #ffbc4a;
+  border-right: 4px solid #ba7d14;
+  color: #634511;
+}
+
+.card-error {
+  animation-name: slideIn;
+  background-color: #fed7d7;
+  border-right: 4px solid #ef4444;
+  color: #c53030;
+}
+
+.card-success.animation-end,
+.card-error.animation-end {
+  animation-name: slideOut;
+  animation-delay: 2s;
+}

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
+require 'sinatra/flash'
 require 'json'
 require_relative '../middlewares/user_middleware'
 

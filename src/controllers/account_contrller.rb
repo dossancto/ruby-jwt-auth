@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
+require 'sinatra/flash'
 require_relative '../middlewares/user_middleware'
 
 require_relative '../services/jwt_service'
@@ -17,6 +18,7 @@ class AccountController < UserMiddleware
   set :views, File.expand_path('../views', __dir__)
 
   get '/account/log_in' do
+    puts @current_user
     unnathenticate!
 
     erb :'accounts/index'
@@ -68,6 +70,7 @@ class AccountController < UserMiddleware
 
     return token unless user_agent =~ /Mozilla|Chrome|Safari|Opera|Firefox/
 
+    flash[:success] = 'Login successful!'
     redirect '/account/manage'
   end
 
@@ -89,6 +92,8 @@ class AccountController < UserMiddleware
   end
 
   get '/account/verify-email' do
+    authenticate!
+
     return redirect '/account/log_in' unless @current_user
     return redirect '/' if @current_user.email_confirmed
 
@@ -126,6 +131,8 @@ class AccountController < UserMiddleware
                           secure: true,              # Only send the cookie over HTTPS
                           http_only: true            # Restrict cookie access to HTTP requests only
                         })
+
+    flash[:error] = 'Unlogged'
     redirect '/'
   end
 

@@ -1,0 +1,22 @@
+<% if flash[:success] || flash[:error] || flash[:info] %>
+  <div class="card-hold max-w-md mx-auto p-4 space-y-4">
+    <% if flash[:info] %>
+      <div class="base-card card-info">
+        <%= flash[:info] %>
+      </div>
+    <% end %>
+
+    <% if flash[:success] %>
+      <div class="base-card card-success">
+        <%= flash[:success] %>
+      </div>
+    <% end %>
+
+    <% if flash[:error] %>
+      <div class="base-card card-error">
+        <%= flash[:error] %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
