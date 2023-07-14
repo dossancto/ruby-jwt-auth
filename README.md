@@ -15,13 +15,13 @@ $ docker compose up -d
 - Create database
 
 ```sh
-$ bundle exec db:create
+$ bundle exec rake db:create
 ```
 
 - Run migrations
 
 ```sh
-$ bundle exec db:migrate
+$ bundle exec rake db:migrate
 ```
 
 - Config `.env` see `.env.example` for an example
