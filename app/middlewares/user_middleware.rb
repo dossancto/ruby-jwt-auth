@@ -2,8 +2,8 @@
 
 require 'sinatra/base'
 require 'sinatra/flash'
-require_relative '../services/jwt_service'
-require_relative '../repositories/user_accounts_repository'
+require './app/services/jwt_service'
+require './app/repositories/user_accounts_repository'
 
 ## UserMiddleware
 class UserMiddleware < Sinatra::Base

@@ -3,7 +3,7 @@
 require 'sinatra/base'
 require 'sinatra/flash'
 require 'json'
-require_relative '../middlewares/user_middleware'
+require './app/middlewares/user_middleware'
 
 ## AdminAreaController
 class AdminAreaController < UserMiddleware

@@ -4,10 +4,10 @@ require 'sinatra/base'
 require 'sinatra/flash'
 require 'sinatra/activerecord'
 require 'sinatra/contrib'
-require './src/controllers/admin_area_controller'
-require './src/controllers/public_area_controller'
-require './src/controllers/account_contrller'
-require './src/middlewares/user_middleware'
+require './app/controllers/admin_area_controller'
+require './app/controllers/public_area_controller'
+require './app/controllers/account_contrller'
+require './app/middlewares/user_middleware'
 
 ## MyApp
 class MyApp < UserMiddleware
@@ -17,7 +17,7 @@ class MyApp < UserMiddleware
 
   configure do
     enable :sessions
-    set :views, File.join(File.dirname(__FILE__), '/src/views')
+    set :views, File.join(File.dirname(__FILE__), '/app/views')
     set :database_file, 'config/database.yml'
     set :public_folder, File.join(File.dirname(__FILE__), '/public')
     register Sinatra::Flash
@@ -38,5 +38,5 @@ class MyApp < UserMiddleware
     'sucess'
   end
 
-  set :views, File.join(File.dirname(__FILE__), '/src/views')
+  set :views, File.join(File.dirname(__FILE__), '/app/views')
 end

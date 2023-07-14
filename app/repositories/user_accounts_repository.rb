@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'bcrypt'
-require_relative '../models/user_accounts'
-require_relative '../services/bcrypt_service'
+require './app/models/user_accounts'
+require './app/services/bcrypt_service'
 
 ## UserAccountsRepository
 module UserAccountsRepository

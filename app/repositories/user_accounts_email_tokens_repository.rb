@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'bcrypt'
-require_relative '../models/user_accounts_email_tokens'
-require_relative '../services/bcrypt_service'
+require './app/models/user_accounts_email_tokens'
+require './app/services/bcrypt_service'
 
 # one day
 MAX_AGE = 24 * 60 * 60

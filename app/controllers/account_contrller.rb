@@ -2,16 +2,17 @@
 
 require 'sinatra/base'
 require 'sinatra/flash'
-require_relative '../middlewares/user_middleware'
 
-require_relative '../services/jwt_service'
-require_relative '../services/bcrypt_service'
-require_relative '../services/email_service'
+require './app/middlewares/user_middleware'
 
-require_relative '../models/user_accounts'
+require './app/services/jwt_service'
+require './app/services/bcrypt_service'
+require './app/services/email_service'
 
-require_relative '../repositories/user_accounts_repository'
-require_relative '../repositories/user_accounts_email_tokens_repository'
+require './app/models/user_accounts'
+
+require './app/repositories/user_accounts_repository'
+require './app/repositories/user_accounts_email_tokens_repository'
 
 ## AdminAreaController
 class AccountController < UserMiddleware
