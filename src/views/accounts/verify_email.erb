@@ -5,6 +5,8 @@
   </head>
   <body>
     <h1>We've send a confirmation email to you</h1>
+    <a href="/account/confirm/<%= @email_code %>">Click here to verify</a>
+    <a href="/account/regenerate-email-code/">Regenerate code</a>
 
   </body>
 </html>

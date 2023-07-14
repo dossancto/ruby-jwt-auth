@@ -17,6 +17,8 @@ class MyApp < Sinatra::Base
     enable :sessions
     set :views, File.join(File.dirname(__FILE__), '/src/views')
     set :database_file, 'config/database.yml'
+    set :public_folder, File.join(File.dirname(__FILE__), '/public')
+    puts File.join(File.dirname(__FILE__), '/public')
   end
 
   get '/gen-token' do

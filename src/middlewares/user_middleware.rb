@@ -10,11 +10,13 @@ class UserMiddleware < Sinatra::Base
     token = request.env['HTTP_AUTHORIZATION']&.split(' ')&.last
     token ||= request.cookies['jwt_token']
 
-    @current_user = JWTService.get_user(token)
+    @current_user ||= JWTService.get_user(token)
   end
 
-  def authenticate!
+  def authenticate!(route = '/account/verify-email' )
     return invalid_user unless @current_user
+
+    return redirect route unless @current_user.email_confirmed
   end
 
   def authorize!(roles, route = '/')

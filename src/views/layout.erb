@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>My Sinatra App</title>
+    <link rel="stylesheet" href="/styles.css">
+
+  </head>
+  <body>
+    <header>
+      <%= erb :nav %>
+    </header>
+
+      <div class="container mx-auto px-8">
+          <%= yield %>
+      </div>
+
+    <footer>
+      <p>&copy; 2023 My App. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

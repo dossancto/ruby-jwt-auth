@@ -1,0 +1,11 @@
+<div>
+  <% if @current_user %>
+    <div class="flex space-x-4">
+      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+      <a href="/account/manage" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Olá, <%= @current_user.user_name %></a>
+      <a href="/account/log_out" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Log out</a>
+    </div>
+  <% else %>
+      <a href="/account/log_in" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Log in</a>
+  <% end %>
+</div>

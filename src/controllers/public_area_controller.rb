@@ -2,10 +2,13 @@
 
 require 'sinatra/base'
 require 'json'
+require_relative '../middlewares/user_middleware'
 
 ## AdminAreaController
-class PublicAreaController < Sinatra::Base
-  get '/public' do
-    p 'Public Area'
+class PublicAreaController < UserMiddleware
+  set :views, File.expand_path('../views', __dir__)
+
+  get '/' do
+    erb :'public_area/index'
   end
 end

@@ -18,4 +18,9 @@ module UserAccountsRepository
   def self.user_by_id(id)
     UserAccounts.find_by(id:)
   end
+
+  def self.confirm_email(user)
+    user.email_confirmed = true
+    user.save
+  end
 end

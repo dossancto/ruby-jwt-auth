@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_13_194828) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_14_022432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_194828) do
     t.boolean "email_confirmed", default: false
     t.text "roles", default: [], array: true
     t.index ["id"], name: "index_user_accounts_on_id", unique: true
+  end
+
+  create_table "user_accounts_email_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "user_id"
+    t.datetime "creted_at", precision: nil
+    t.datetime "valid_for", precision: nil
+    t.index ["id"], name: "index_user_accounts_email_tokens_on_id", unique: true
   end
 
 end

@@ -2,10 +2,14 @@
 
 require 'sinatra/base'
 require_relative '../middlewares/user_middleware'
+
 require_relative '../services/jwt_service'
 require_relative '../services/bcrypt_service'
+
 require_relative '../models/user_accounts'
+
 require_relative '../repositories/user_accounts_repository'
+require_relative '../repositories/user_accounts_email_tokens_repository'
 
 ## AdminAreaController
 class AccountController < UserMiddleware
@@ -29,7 +33,7 @@ class AccountController < UserMiddleware
     user.user_name = params[:user_name]
     user.password = BcryptService.encode_password(params[:password])
     user.email = params[:email]
-    user.roles = ['admin', 'user']
+    user.roles = %w[admin user]
 
     user.save
 
@@ -66,14 +70,57 @@ class AccountController < UserMiddleware
     redirect '/account/manage'
   end
 
-  get '/account/confirm/:token' do
+  get '/account/confirm/:code' do |code|
+    email = UserAccountsEmailTokensRepository.email_tokem_from_code(code)
+    user = UserAccountsRepository.user_by_id(email.user_id)
+
+    return 'Code expired' if Time.now.utc >= email.valid_for
+    return 'invalid code' unless UserAccountsRepository.confirm_email(user)
+
+    UserAccountsEmailTokensRepository.destroy_code(user)
+    redirect '/'
   end
 
   get '/account/manage' do
     authenticate!
 
-    @user = @current_user
     erb :'accounts/manage'
+  end
+
+  get '/account/verify-email' do
+    return redirect '/account/log_in' unless @current_user
+    return redirect '/' if @current_user.email_confirmed
+
+    email = UserAccountsEmailTokensRepository.token_from_user(@current_user)
+    @email_code = email ? email.id : UserAccountsEmailTokensRepository.new_email_token(@current_user)
+
+    erb :'accounts/verify_email'
+  end
+
+  get '/account/regenerate-email-code/' do
+    return redirect '/account/log_in' unless @current_user
+    return redirect '/' if @current_user.email_confirmed
+
+    if UserAccountsEmailTokensRepository.destroy_code(@current_user)
+      puts 'foi'
+    else
+      puts 'não foi'
+    end
+
+    @email_code = UserAccountsEmailTokensRepository.new_email_token(@current_user)
+
+    erb :'accounts/verify_email'
+  end
+
+  get '/account/log_out' do
+    response.set_cookie(:jwt_token, {
+                          value: nil,
+                          expires: Time.now + 3600,  # Expires in 1 hour
+                          path: '/',                 # Cookie available for all routes
+                          secure: true,              # Only send the cookie over HTTPS
+                          http_only: true            # Restrict cookie access to HTTP requests only
+                        })
+    redirect '/'
   end
 
   def set_jwt_cookie(token)
