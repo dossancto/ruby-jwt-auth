@@ -15,23 +15,23 @@ class UserMiddleware < Sinatra::Base
     puts @current_user
   end
 
-  after do
-    puts "[#{Time.now}] after running"
-    @current_user = nil
-    puts @current_user
-  end
-
   def current_user(request)
     token = request.env['http_authorization']&.split(' ')&.last
     token ||= request.cookies['jwt_token']
 
-    @current_user ||= JWTService.get_user(token)
+    JWTService.get_user(token)
   end
 
   def authenticate!(route = '/account/verify-email')
     return invalid_user unless @current_user
 
     return redirect route unless @current_user.email_confirmed
+  end
+
+  def email_unverified!(route = '/')
+    return invalid_user unless @current_user
+
+    return redirect route if @current_user.email_confirmed
   end
 
   def authorize!(roles, route = '/')

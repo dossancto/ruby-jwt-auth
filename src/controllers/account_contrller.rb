@@ -82,6 +82,8 @@ class AccountController < UserMiddleware
     return 'invalid code' unless UserAccountsRepository.confirm_email(user)
 
     UserAccountsEmailTokensRepository.destroy_code(user)
+    flash[:success] = 'Email confirmed!'
+
     redirect '/'
   end
 
@@ -92,18 +94,25 @@ class AccountController < UserMiddleware
   end
 
   get '/account/verify-email' do
-    authenticate!
+    email_unverified!
 
     return redirect '/account/log_in' unless @current_user
     return redirect '/' if @current_user.email_confirmed
 
     email = UserAccountsEmailTokensRepository.token_from_user(@current_user)
 
-    return erb :'accounts/verify_email' if email
+    return redirect '/account/email-verify' if email
 
     email_code = UserAccountsEmailTokensRepository.new_email_token(@current_user)
 
     EmailService.send_confirmation_email(@current_user, email_code)
+
+    flash[:success] = 'Email sended to your email.'
+    redirect '/account/email-verify'
+  end
+
+  get '/account/email-verify' do
+    email_unverified!
 
     erb :'accounts/verify_email'
   end

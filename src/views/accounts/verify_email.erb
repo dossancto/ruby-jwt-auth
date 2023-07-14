@@ -1,11 +1,9 @@
-<h2 class="text-base font-semibold leading-7 text-gray-900">We've send a confirmation email to you</h2>
+<h2 class="text-base font-semibold leading-7 text-gray-900">We've send a confirmation email to <%= @current_user.email %></h2>
 
 <div class="mt-1 text-sm leading-6 text-red-900">
   <a href="/account/regenerate-email-code/">
     <button
     type="button"
-    class="underline ">
-    Regenerate Token
-    </button>
+    class="underline ">Re-send email</button>
   </a>
 </div>
