@@ -5,6 +5,7 @@ require_relative '../middlewares/user_middleware'
 
 require_relative '../services/jwt_service'
 require_relative '../services/bcrypt_service'
+require_relative '../services/email_service'
 
 require_relative '../models/user_accounts'
 
@@ -92,7 +93,12 @@ class AccountController < UserMiddleware
     return redirect '/' if @current_user.email_confirmed
 
     email = UserAccountsEmailTokensRepository.token_from_user(@current_user)
-    @email_code = email ? email.id : UserAccountsEmailTokensRepository.new_email_token(@current_user)
+
+    return erb :'accounts/verify_email' if email
+
+    email_code = UserAccountsEmailTokensRepository.new_email_token(@current_user)
+
+    EmailService.send_confirmation_email(@current_user, email_code)
 
     erb :'accounts/verify_email'
   end
@@ -101,15 +107,15 @@ class AccountController < UserMiddleware
     return redirect '/account/log_in' unless @current_user
     return redirect '/' if @current_user.email_confirmed
 
-    if UserAccountsEmailTokensRepository.destroy_code(@current_user)
-      puts 'foi'
-    else
-      puts 'não foi'
-    end
+    UserAccountsEmailTokensRepository.destroy_code(@current_user)
 
-    @email_code = UserAccountsEmailTokensRepository.new_email_token(@current_user)
+    redirect '/account/verify-email'
+  end
 
-    erb :'accounts/verify_email'
+  get '/account/reset-password' do
+    authenticate!
+
+    erb :'accounts/reset_password'
   end
 
   get '/account/log_out' do

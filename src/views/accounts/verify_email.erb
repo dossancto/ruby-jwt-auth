@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Confirm email</title>
-  </head>
-  <body>
-    <h1>We've send a confirmation email to you</h1>
-    <a href="/account/confirm/<%= @email_code %>">Click here to verify</a>
-    <a href="/account/regenerate-email-code/">Regenerate code</a>
+<h2 class="text-base font-semibold leading-7 text-gray-900">We've send a confirmation email to you</h2>
 
-  </body>
-</html>
+<div class="mt-1 text-sm leading-6 text-red-900">
+  <a href="/account/regenerate-email-code/">
+    <button
+    type="button"
+    class="underline ">
+    Regenerate Token
+    </button>
+  </a>
+</div>
