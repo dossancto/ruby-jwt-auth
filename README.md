@@ -26,6 +26,12 @@ $ bundle exec db:migrate
 
 - Config `.env` see `.env.example` for an example
 
+- Build Tailwind file
+
+```sh
+$ npm run build:css
+```
+
 - Run server
 
 ```sh
