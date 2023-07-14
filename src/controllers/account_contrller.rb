@@ -105,7 +105,12 @@ class AccountController < UserMiddleware
 
     email_code = UserAccountsEmailTokensRepository.new_email_token(@current_user)
 
-    EmailService.send_confirmation_email(@current_user, email_code)
+    begin
+      EmailService.send_confirmation_email(@current_user, email_code)
+    rescue StandardError
+      flash[:error] = 'Error while sending email, place try again later'
+      return redirect '/account/email-verify'
+    end
 
     flash[:success] = 'Email sended to your email.'
     redirect '/account/email-verify'
