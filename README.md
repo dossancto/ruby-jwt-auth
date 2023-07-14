@@ -12,6 +12,18 @@ $ bundle install
 $ docker compose up -d
 ```
 
+- Create database
+
+```sh
+$ bundle exec db:create
+```
+
+- Run migrations
+
+```sh
+$ bundle exec db:migrate
+```
+
 - Config `.env` see `.env.example` for an example
 
 - Run server
