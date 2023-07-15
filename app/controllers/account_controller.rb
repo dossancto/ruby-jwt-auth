@@ -6,7 +6,6 @@ require './app/services/jwt_service'
 require './app/services/bcrypt_service'
 require './app/services/email_service'
 
-
 require './app/repositories/user_accounts_repository'
 require './app/repositories/user_accounts_email_tokens_repository'
 
@@ -27,7 +26,12 @@ class AccountController < ApplicationController
   end
 
   post '/register' do
-    UserAccountsRepository.new_from_params(params)
+    user = UserAccountsRepository.new_from_params(params)
+
+    unless user 
+      flash[:error] = "Pleace check the fields and try again"
+      redirect '/register'
+    end
 
     token = JWTService.encode(user.as_json)
 
@@ -48,7 +52,10 @@ class AccountController < ApplicationController
 
     user = UserAccountsRepository.user_from_email_password(email, password)
 
-    return redirect '/account/log_in' unless user
+    unless user
+      flash[:error] = 'Email or password does not exist'
+      redirect '/account/log_in'
+    end
 
     token = JWTService.encode(user.as_json)
 
