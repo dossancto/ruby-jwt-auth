@@ -21,7 +21,7 @@ RSpec.describe UserAccountsEmailTokensRepository do
 
     it { expect(email_confirm.class).to be(UserAccountsEmailTokens) }
 
-    it { expect(email_confirm.user_id).to eq(user.id) }
+    it { expect(UserAccountsEmailTokens.last.user_id).to eq(user.id) }
   end
 
   context 'confirm email code' do
