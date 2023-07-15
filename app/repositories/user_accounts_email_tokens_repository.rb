@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'bcrypt'
 require './app/models/user_accounts_email_tokens'
-require './app/services/bcrypt_service'
 
 # one day
 MAX_AGE = 24 * 60 * 60
@@ -18,7 +16,7 @@ module UserAccountsEmailTokensRepository
 
     email.save
 
-    email.id
+    email
   end
 
   def self.user_id_from_code(code)
@@ -42,5 +40,4 @@ module UserAccountsEmailTokensRepository
   def self.destroy_code(user)
     UserAccountsEmailTokens.where(user_id: user.id).delete_all
   end
-
 end

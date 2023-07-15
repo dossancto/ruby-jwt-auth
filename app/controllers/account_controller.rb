@@ -99,7 +99,7 @@ class AccountController < ApplicationController
 
     return redirect '/account/email-verify' if email
 
-    email_code = UserAccountsEmailTokensRepository.new_email_token(@current_user)
+    email_code = UserAccountsEmailTokensRepository.new_email_token(@current_user).id
 
     begin
       EmailService.send_confirmation_email(@current_user, email_code)
