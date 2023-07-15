@@ -14,16 +14,10 @@ module User
     end
 
     def call
-      user = @user.new
+      password = BcryptService.encode_password(@params[:password])
+      user = @user.new(@params[:user_name], password, @params[:email], %w[admin user])
 
-      user.user_name = params[:user_name]
-      user.password = BcryptService.encode_password(params[:password])
-      user.email = params[:email]
-      user.roles = %w[admin user]
-
-      user.save
-
-      user
+      @user_repository.create!(user.to_hash)
     end
   end
 end

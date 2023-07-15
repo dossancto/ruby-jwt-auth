@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 require './spec/spec_helper'
-require './app/repositories/user_accounts_email_tokens_repository'
-require './app/repositories/user_accounts_repository'
+require './app/adapters/usecases/user/index'
 require './app/models/user_accounts_email_tokens'
 
-RSpec.describe UserAccountsEmailTokensRepository do
+RSpec.describe User do
   let(:valid_user_params) do
     {
       user_name: 'JohnDoe',
@@ -14,11 +13,14 @@ RSpec.describe UserAccountsEmailTokensRepository do
     }
   end
 
-  let(:user) { UserAccountsRepository.new_from_params(valid_user_params) }
+  let(:user) { User::Register.new(params: valid_user_params) }
+  # let(:user) { UserAccountsRepository.new_from_params(valid_user_params) }
 
   context 'with new email token' do
-    let(:email_confirm) { UserAccountsEmailTokensRepository.new_email_token(user) }
+    let(:email_confirm) { User::GenerateEmailCode.new.from_user(user).call }
+    # let(:email_confirm) { UserAccountsEmailTokensRepository.new_email_token(user) }
 
+    # it { expect(email_confirm.class).to be(UserAccountsEmailTokens) }
     it { expect(email_confirm.class).to be(UserAccountsEmailTokens) }
 
     it { expect(UserAccountsEmailTokens.last.user_id).to eq(user.id) }
