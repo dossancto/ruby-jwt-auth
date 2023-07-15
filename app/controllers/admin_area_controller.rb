@@ -2,7 +2,6 @@
 
 require 'sinatra/base'
 require 'sinatra/flash'
-require 'json'
 require './app/controllers/application_controller'
 
 ## AdminAreaController

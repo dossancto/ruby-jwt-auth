@@ -3,8 +3,6 @@
 require 'sinatra/base'
 require 'sinatra/flash'
 
-require './app/services/jwt_service'
-
 require './app/repositories/user_accounts_repository'
 
 ## UserMiddleware
