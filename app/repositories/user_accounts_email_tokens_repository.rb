@@ -10,9 +10,7 @@ MAX_AGE = 24 * 60 * 60
 ## UserAccountsRepository
 module UserAccountsEmailTokensRepository
   def self.new_email_token(user)
-    puts MAX_AGE
     valid_for = Time.now + MAX_AGE
-    puts "TOKEN VALID FOR #{valid_for}"
     email = UserAccountsEmailTokens.new
     email.user_id = user.id
     email.creted_at = Time.now

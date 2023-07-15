@@ -9,7 +9,6 @@ Dotenv.load
 module EmailService
   def self.send_confirmation_email(user, token)
     domain = ENV['APPLICATION_DOMAIN']
-    puts domain
 
     RestClient.post "https://api:#{ENV['MAIL_GUN_KEY']}"\
       "@api.mailgun.net/v3/#{ENV['MAIL_GUN_DOMAIN_NAME']}/messages",
