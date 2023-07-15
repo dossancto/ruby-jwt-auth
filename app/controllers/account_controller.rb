@@ -39,9 +39,7 @@ class AccountController < ApplicationController
 
     status 201
 
-    user_agent = request.user_agent
-
-    return token unless user_agent =~ /Mozilla|Chrome|Safari|Opera|Firefox/
+    return api_render_one({ token: }) unless browser_request?
 
     redirect '/account/manage'
   end
@@ -63,7 +61,7 @@ class AccountController < ApplicationController
 
     status 200
 
-    return api_render_one token unless browser_request?
+    return api_render_one({ token: }) unless browser_request?
 
     flash[:success] = 'Login successful!'
     redirect '/account/manage'
