@@ -22,4 +22,17 @@ module UserAccountsRepository
     user.email_confirmed = true
     user.save
   end
+
+  def self.new_from_params(params)
+    user = UserAccounts.new
+
+    user.user_name = params[:user_name]
+    user.password = BcryptService.encode_password(params[:password])
+    user.email = params[:email]
+    user.roles = %w[admin user]
+
+    user.save
+
+    user
+  end
 end
