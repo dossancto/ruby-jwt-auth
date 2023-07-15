@@ -3,9 +3,7 @@
 # Rakefile
 require 'sinatra/activerecord'
 require 'sinatra/activerecord/rake'
+require './config/environment'
 
 namespace :db do
-  task :load_config do
-    require './app'
-  end
 end
