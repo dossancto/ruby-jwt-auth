@@ -28,8 +28,8 @@ class AccountController < ApplicationController
   post '/register' do
     user = UserAccountsRepository.new_from_params(params)
 
-    unless user 
-      flash[:error] = "Pleace check the fields and try again"
+    unless user
+      flash[:error] = 'Pleace check the fields and try again'
       redirect '/register'
     end
 
@@ -62,9 +62,8 @@ class AccountController < ApplicationController
     set_jwt_token(token)
 
     status 200
-    user_agent = request.user_agent
 
-    return token unless user_agent =~ /Mozilla|Chrome|Safari|Opera|Firefox/
+    return api_render_one token unless browser_request?
 
     flash[:success] = 'Login successful!'
     redirect '/account/manage'
