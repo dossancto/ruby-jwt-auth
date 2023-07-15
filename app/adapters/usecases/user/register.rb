@@ -3,6 +3,7 @@
 require './app/repositories/user_accounts_repository'
 require './app/repositories/user_accounts_email_tokens_repository'
 require './app/models/user_accounts'
+require './app/services/bcrypt_service'
 
 module User
   ## Create

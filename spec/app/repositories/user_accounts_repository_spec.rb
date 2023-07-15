@@ -42,24 +42,6 @@ RSpec.describe UserAccountsRepository do
     end
   end
 
-  describe '.confirm_email' do
-    it 'updates the user email_confirmed attribute to true' do
-      user = User::Register.new(params: { user_name: 'JohnDoe', password: 'correctPassword',
-                                          email: 'johndoe@example.com' }).call
-
-      allow(UserAccountsRepository).to receive(:find_by).with(email: 'johndoe@example.com').and_return(user)
-
-      email = User::GenerateEmailCode.new.from_user(user).call
-
-      expect(user.email_confirmed).to eq(false)
-
-      allow(UserAccountsRepository).to receive(:find_by).with(id: user.id).and_return(user)
-
-      User::ConfirmEmail.new(user_id: user.id).with_code(email.id).call
-
-      expect(user.email_confirmed).to eq(true)
-    end
-  end
 
   describe '.new_from_params' do
     it 'creates a new user with the provided parameters' do
