@@ -44,4 +44,17 @@ module UserAccountsEmailTokensRepository
   def self.destroy_code(user)
     UserAccountsEmailTokens.where(user_id: user.id).delete_all
   end
+
+  def new_from_params(params)
+    user = UserAccounts.new
+
+    user.user_name = params[:user_name]
+    user.password = BcryptService.encode_password(params[:password])
+    user.email = params[:email]
+    user.roles = %w[admin user]
+
+    user.save
+
+    user
+  end
 end

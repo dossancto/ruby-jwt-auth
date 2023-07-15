@@ -11,4 +11,14 @@ module CookieHelper
                           http_only: true            # Restrict cookie access to HTTP requests only
                         })
   end
+
+  def invalidate_jwt_token!
+    response.set_cookie(:jwt_token, {
+                          value: nil,
+                          expires: Time.now + 3600,  # Expires in 1 hour
+                          path: '/',                 # Cookie available for all routes
+                          secure: true,              # Only send the cookie over HTTPS
+                          http_only: true            # Restrict cookie access to HTTP requests only
+                        })
+  end
 end

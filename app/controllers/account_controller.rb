@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
-require 'sinatra/base'
-require 'sinatra/flash'
+require './app/controllers/application_controller'
 
 require './app/services/jwt_service'
 require './app/services/bcrypt_service'
 require './app/services/email_service'
 
-require './app/controllers/application_controller'
-
-require './app/models/user_accounts'
 
 require './app/repositories/user_accounts_repository'
 require './app/repositories/user_accounts_email_tokens_repository'
@@ -31,14 +27,7 @@ class AccountController < ApplicationController
   end
 
   post '/register' do
-    user = UserAccounts.new
-
-    user.user_name = params[:user_name]
-    user.password = BcryptService.encode_password(params[:password])
-    user.email = params[:email]
-    user.roles = %w[admin user]
-
-    user.save
+    UserAccountsRepository.new_from_params(params)
 
     token = JWTService.encode(user.as_json)
 
@@ -138,13 +127,7 @@ class AccountController < ApplicationController
   end
 
   get '/log_out' do
-    response.set_cookie(:jwt_token, {
-                          value: nil,
-                          expires: Time.now + 3600,  # Expires in 1 hour
-                          path: '/',                 # Cookie available for all routes
-                          secure: true,              # Only send the cookie over HTTPS
-                          http_only: true            # Restrict cookie access to HTTP requests only
-                        })
+    invalidate_jwt_token!
 
     flash[:error] = 'Unlogged'
     redirect '/'
