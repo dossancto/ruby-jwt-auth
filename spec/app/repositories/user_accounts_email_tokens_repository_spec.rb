@@ -43,7 +43,7 @@ RSpec.describe User do
       user = User::Register.new(params: { user_name: 'JohnDoe', password: 'correctPassword',
                                           email: 'johndoe@example.com' }).call
 
-      email = User::GenerateEmailCode.new.from_user(user).with_valid_for(Time.now).call
+      email = User::GenerateEmailCode.new.from_user(user).with_valid_for(0).call
       expect(user.email_confirmed).to eq(false)
 
       allow(UserAccountsRepository).to receive(:find_by).with(id: user.id).and_return(user)

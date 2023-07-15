@@ -21,7 +21,7 @@ module User
     end
 
     def with_valid_for(time)
-      @valid_for = time
+      @valid_for = Time.now + time
       self
     end
 
