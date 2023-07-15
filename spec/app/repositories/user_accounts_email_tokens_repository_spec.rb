@@ -28,8 +28,6 @@ RSpec.describe User do
       user = User::Register.new(params: { user_name: 'JohnDoe', password: 'correctPassword',
                                           email: 'johndoe@example.com' }).call
 
-      allow(UserAccountsRepository).to receive(:find_by).with(email: 'johndoe@example.com').and_return(user)
-
       email = User::GenerateEmailCode.new.from_user(user).call
 
       expect(user.email_confirmed).to eq(false)
@@ -39,6 +37,19 @@ RSpec.describe User do
       User::ConfirmEmail.new(user_id: user.id).with_code(email.id).call
 
       expect(user.email_confirmed).to eq(true)
+    end
+
+    it 'If code expires' do
+      user = User::Register.new(params: { user_name: 'JohnDoe', password: 'correctPassword',
+                                          email: 'johndoe@example.com' }).call
+
+      email = User::GenerateEmailCode.new.from_user(user).with_valid_for(Time.now).call
+      expect(user.email_confirmed).to eq(false)
+
+      allow(UserAccountsRepository).to receive(:find_by).with(id: user.id).and_return(user)
+      User::ConfirmEmail.new(user_id: user.id).with_code(email.id).call
+
+      expect(user.email_confirmed).to eq(false)
     end
   end
 end
