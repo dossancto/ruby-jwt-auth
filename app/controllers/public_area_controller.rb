@@ -7,6 +7,6 @@ require './app/controllers/application_controller'
 ## AdminAreaController
 class PublicAreaController < ApplicationController
   get '/' do
-    erb :'public_area/index'
+    render! :index
   end
 end

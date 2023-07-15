@@ -6,12 +6,12 @@ require './app/controllers/application_controller'
 
 ## AdminAreaController
 class AdminAreaController < ApplicationController
-  before '/admin*' do
+  before do
     authenticate!
     authorize! [:admin]
   end
 
-  get '/admin' do
+  get '/' do
     @current_user.to_json
   end
 end

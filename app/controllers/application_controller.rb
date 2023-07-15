@@ -8,6 +8,7 @@ require './app/repositories/user_accounts_repository'
 ## UserMiddleware
 class ApplicationController < Sinatra::Base
   include AuthHelper
+  include RenderHelper
 
   configure do
     register Sinatra::Flash

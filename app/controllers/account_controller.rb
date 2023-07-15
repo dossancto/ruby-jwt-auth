@@ -21,13 +21,13 @@ class AccountController < ApplicationController
   get '/log_in' do
     unnathenticate!
 
-    erb :'accounts/index'
+    render! :index
   end
 
   get '/register' do
     unnathenticate!
 
-    erb :'accounts/register'
+    render! :register
   end
 
   post '/register' do
@@ -90,7 +90,7 @@ class AccountController < ApplicationController
   get '/manage' do
     authenticate!
 
-    erb :'accounts/manage'
+    render! :manage
   end
 
   get '/verify-email' do
@@ -119,7 +119,7 @@ class AccountController < ApplicationController
   get '/email-verify' do
     email_unverified!
 
-    erb :'accounts/verify_email'
+    render! :verify_email
   end
 
   get '/regenerate-email-code/' do
@@ -134,7 +134,7 @@ class AccountController < ApplicationController
   get '/reset-password' do
     authenticate!
 
-    erb :'accounts/reset_password'
+    render! :reset_password
   end
 
   get '/log_out' do

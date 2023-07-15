@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-## AuthService
+## CookieHelper
 module CookieHelper
   def set_jwt_token(token)
     response.set_cookie(:jwt_token, {
