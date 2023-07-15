@@ -12,7 +12,9 @@
   transform: translateX(0);
   }
   to {
-  transform: translateX(100%);
+  opacity: 0;
+  visibility: hidden;
+  display: none;
   }
 }
 
@@ -29,6 +31,7 @@
   display: flex;
   align-items: center;
   padding: 0 30px;
+  cursor: pointer;
 }
 
 .card-success {
@@ -52,8 +55,7 @@
   color: #c53030;
 }
 
-.card-success.animation-end,
-.card-error.animation-end {
+.base-card.animation-end {
   animation-name: slideOut;
-  animation-delay: 2s;
+  animation-delay: .5s;
 }
