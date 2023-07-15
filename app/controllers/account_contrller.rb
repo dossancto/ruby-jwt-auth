@@ -3,11 +3,11 @@
 require 'sinatra/base'
 require 'sinatra/flash'
 
-require './app/middlewares/user_middleware'
-
 require './app/services/jwt_service'
 require './app/services/bcrypt_service'
 require './app/services/email_service'
+
+require './app/controllers/application_controller'
 
 require './app/models/user_accounts'
 
@@ -15,23 +15,22 @@ require './app/repositories/user_accounts_repository'
 require './app/repositories/user_accounts_email_tokens_repository'
 
 ## AdminAreaController
-class AccountController < UserMiddleware
-  set :views, File.expand_path('../views', __dir__)
+class AccountController < ApplicationController
+  include CookieHelper
 
-  get '/account/log_in' do
-    puts @current_user
+  get '/log_in' do
     unnathenticate!
 
     erb :'accounts/index'
   end
 
-  get '/account/register' do
+  get '/register' do
     unnathenticate!
 
     erb :'accounts/register'
   end
 
-  post '/account/register' do
+  post '/register' do
     user = UserAccounts.new
 
     user.user_name = params[:user_name]
@@ -43,7 +42,7 @@ class AccountController < UserMiddleware
 
     token = JWTService.encode(user.as_json)
 
-    set_jwt_cookie(token)
+    set_jwt_token(token)
 
     status 201
 
@@ -54,7 +53,7 @@ class AccountController < UserMiddleware
     redirect '/account/manage'
   end
 
-  post '/account/log_in' do
+  post '/log_in' do
     email = params[:email]
     password = params[:password]
 
@@ -64,7 +63,7 @@ class AccountController < UserMiddleware
 
     token = JWTService.encode(user.as_json)
 
-    set_jwt_cookie(token)
+    set_jwt_token(token)
 
     status 200
     user_agent = request.user_agent
@@ -75,7 +74,7 @@ class AccountController < UserMiddleware
     redirect '/account/manage'
   end
 
-  get '/account/confirm/:code' do |code|
+  get '/confirm/:code' do |code|
     email = UserAccountsEmailTokensRepository.email_tokem_from_code(code)
     user = UserAccountsRepository.user_by_id(email.user_id)
 
@@ -88,13 +87,13 @@ class AccountController < UserMiddleware
     redirect '/'
   end
 
-  get '/account/manage' do
+  get '/manage' do
     authenticate!
 
     erb :'accounts/manage'
   end
 
-  get '/account/verify-email' do
+  get '/verify-email' do
     email_unverified!
 
     return redirect '/account/log_in' unless @current_user
@@ -117,13 +116,13 @@ class AccountController < UserMiddleware
     redirect '/account/email-verify'
   end
 
-  get '/account/email-verify' do
+  get '/email-verify' do
     email_unverified!
 
     erb :'accounts/verify_email'
   end
 
-  get '/account/regenerate-email-code/' do
+  get '/regenerate-email-code/' do
     return redirect '/account/log_in' unless @current_user
     return redirect '/' if @current_user.email_confirmed
 
@@ -132,13 +131,13 @@ class AccountController < UserMiddleware
     redirect '/account/verify-email'
   end
 
-  get '/account/reset-password' do
+  get '/reset-password' do
     authenticate!
 
     erb :'accounts/reset_password'
   end
 
-  get '/account/log_out' do
+  get '/log_out' do
     response.set_cookie(:jwt_token, {
                           value: nil,
                           expires: Time.now + 3600,  # Expires in 1 hour
@@ -149,15 +148,5 @@ class AccountController < UserMiddleware
 
     flash[:error] = 'Unlogged'
     redirect '/'
-  end
-
-  def set_jwt_cookie(token)
-    response.set_cookie(:jwt_token, {
-                          value: token,
-                          expires: Time.now + 3600,  # Expires in 1 hour
-                          path: '/',                 # Cookie available for all routes
-                          secure: true,              # Only send the cookie over HTTPS
-                          http_only: true            # Restrict cookie access to HTTP requests only
-                        })
   end
 end

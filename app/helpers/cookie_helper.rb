@@ -1,0 +1,14 @@
+# frozen_string_literal: true
+
+## AuthService
+module CookieHelper
+  def set_jwt_token(token)
+    response.set_cookie(:jwt_token, {
+                          value: token,
+                          expires: Time.now + 3600,  # Expires in 1 hour
+                          path: '/',                 # Cookie available for all routes
+                          secure: true,              # Only send the cookie over HTTPS
+                          http_only: true            # Restrict cookie access to HTTP requests only
+                        })
+  end
+end

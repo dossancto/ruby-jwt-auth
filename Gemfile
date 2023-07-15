@@ -27,3 +27,5 @@ gem "sinatra-activerecord", "~> 2.0"
 gem "rest-client", "~> 2.1"
 
 gem "sinatra-flash", "~> 0.3.0"
+
+gem "bundler", "~> 2.4"

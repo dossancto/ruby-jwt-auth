@@ -1,4 +1,12 @@
-require 'sinatra'
-require './app'
+# frozen_string_literal: true
 
-run MyApp
+require 'sinatra'
+require 'sinatra/base'
+
+Dir.glob('./app/{helpers,controllers}/*.rb').each { |file| require file }
+
+# Routes
+
+map('/account') { run AccountController }
+
+map('/') { run PublicAreaController }

@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
-require 'json'
 require 'sinatra/flash'
-require './app/middlewares/user_middleware'
+require './app/controllers/application_controller'
 
 ## AdminAreaController
-class PublicAreaController < UserMiddleware
-  set :views, File.expand_path('../views', __dir__)
-
+class PublicAreaController < ApplicationController
   get '/' do
-    flash[:info] = 'test'
     erb :'public_area/index'
   end
 end

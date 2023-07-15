@@ -1,20 +1,7 @@
 # frozen_string_literal: true
 
-require 'sinatra/base'
-require 'sinatra/flash'
-require './app/services/jwt_service'
-require './app/repositories/user_accounts_repository'
-
-## UserMiddleware
-class UserMiddleware < Sinatra::Base
-  register Sinatra::Flash
-
-  before do
-    puts "[#{Time.now}] before running"
-    @current_user ||= current_user(request)
-    puts @current_user
-  end
-
+## AuthService
+module AuthHelper
   def current_user(request)
     token = request.env['http_authorization']&.split(' ')&.last
     token ||= request.cookies['jwt_token']
@@ -47,8 +34,6 @@ class UserMiddleware < Sinatra::Base
   def unnathenticate!(route = '/account/manage')
     redirect route if @current_user
   end
-
-  private
 
   def invalid_user
     response.delete_cookie(:jwt_token)

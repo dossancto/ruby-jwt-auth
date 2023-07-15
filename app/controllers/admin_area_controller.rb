@@ -3,10 +3,10 @@
 require 'sinatra/base'
 require 'sinatra/flash'
 require 'json'
-require './app/middlewares/user_middleware'
+require './app/controllers/application_controller'
 
 ## AdminAreaController
-class AdminAreaController < UserMiddleware
+class AdminAreaController < ApplicationController
   before '/admin*' do
     authenticate!
     authorize! [:admin]
