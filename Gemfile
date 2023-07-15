@@ -29,3 +29,14 @@ gem "rest-client", "~> 2.1"
 gem "sinatra-flash", "~> 0.3.0"
 
 gem "bundler", "~> 2.4"
+
+
+group :development do
+  gem "rspec", "~> 3.12"
+  gem "rack-test", "~> 2.1"
+end
+
+group :development do
+  gem "byebug", "~> 11.1"
+end
+
