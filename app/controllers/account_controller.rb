@@ -89,9 +89,6 @@ class AccountController < ApplicationController
   get '/verify-email' do
     email_unverified!
 
-    return redirect '/account/log_in' unless @current_user
-    return redirect '/' if @current_user.email_confirmed
-
     email = UserAccountsEmailTokensRepository.token_from_user(@current_user)
 
     return redirect '/account/email-verify' if email
@@ -116,8 +113,7 @@ class AccountController < ApplicationController
   end
 
   get '/regenerate-email-code/' do
-    return redirect '/account/log_in' unless @current_user
-    return redirect '/' if @current_user.email_confirmed
+    email_unverified!
 
     UserAccountsEmailTokensRepository.destroy_code(@current_user)
 
