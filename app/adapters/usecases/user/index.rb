@@ -1,0 +1,6 @@
+require_relative './confirm_email'
+require_relative './login'
+require_relative './register'
+require_relative './select'
+require_relative './resend_email'
+require_relative './generate_email_code'
