@@ -11,6 +11,7 @@ require 'active_support/all'
 require 'sinatra/activerecord'
 require 'sinatra/base'
 require 'sinatra'
+require 'dotenv'
 Dotenv.load
 
 set :database_file, 'database.yml'
