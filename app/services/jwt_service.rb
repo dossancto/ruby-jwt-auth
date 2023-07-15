@@ -2,6 +2,7 @@
 
 require 'dotenv'
 require 'jwt'
+require './app/adapters/usecases/user/index'
 
 Dotenv.load
 
@@ -22,11 +23,10 @@ module JWTService
     jwt_user = decode(token)[0]
     jwt_user_id = jwt_user['id']
 
-    UserAccountsRepository.user_by_id(jwt_user_id)
-
-    # user_id = jwt_user['id']
+    User::Select.new.with_id(jwt_user_id)
     # TODO: Get user in database
   rescue StandardError
+    puts 'jwt.service [line:30]'
     puts $!
     nil
   end

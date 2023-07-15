@@ -3,11 +3,9 @@
 require './app/controllers/application_controller'
 
 require './app/services/jwt_service'
-require './app/services/bcrypt_service'
 require './app/services/email_service'
 
-require './app/repositories/user_accounts_repository'
-require './app/repositories/user_accounts_email_tokens_repository'
+require './app/adapters/usecases/user/index'
 
 ## AdminAreaController
 class AccountController < ApplicationController
@@ -26,7 +24,7 @@ class AccountController < ApplicationController
   end
 
   post '/register' do
-    user = UserAccountsRepository.new_from_params(params)
+    user = User::Register.new(params:).call
 
     unless user
       flash[:error] = 'Pleace check the fields and try again'
@@ -48,7 +46,7 @@ class AccountController < ApplicationController
     email = params[:email]
     password = params[:password]
 
-    user = UserAccountsRepository.user_from_email_password(email, password)
+    user = User::Login.new(user_email: email).from_password(password).call
 
     unless user
       flash[:error] = 'Email or password does not exist'
@@ -60,7 +58,6 @@ class AccountController < ApplicationController
     set_jwt_token(token)
 
     status 200
-
     return api_render_one({ token: }) unless browser_request?
 
     flash[:success] = 'Login successful!'
@@ -68,15 +65,14 @@ class AccountController < ApplicationController
   end
 
   get '/confirm/:code' do |code|
-    email = UserAccountsEmailTokensRepository.email_tokem_from_code(code)
-    user = UserAccountsRepository.user_by_id(email.user_id)
+    err_msg = User::ConfirmEmail.new(user_id: @current_user.id).with_code(code).call
 
-    return 'Code expired' if Time.now.utc >= email.valid_for
-    return 'invalid code' unless UserAccountsRepository.confirm_email(user)
+    if err_msg
+      flash[:error] = err_msg
+      return redirect '/account/email-verify'
+    end
 
-    UserAccountsEmailTokensRepository.destroy_code(user)
     flash[:success] = 'Email confirmed!'
-
     redirect '/'
   end
 
@@ -89,11 +85,12 @@ class AccountController < ApplicationController
   get '/verify-email' do
     email_unverified!
 
-    email = UserAccountsEmailTokensRepository.token_from_user(@current_user)
+    email = User::Select.new.email_code(@current_user.id)
 
     return redirect '/account/email-verify' if email
 
-    email_code = UserAccountsEmailTokensRepository.new_email_token(@current_user).id
+    email = User::GenerateEmailCode.new.from_user(@current_user).call
+    email_code = email.id
 
     begin
       EmailService.send_confirmation_email(@current_user, email_code)
@@ -115,7 +112,7 @@ class AccountController < ApplicationController
   get '/regenerate-email-code/' do
     email_unverified!
 
-    UserAccountsEmailTokensRepository.destroy_code(@current_user)
+    User::ResendEmail.new(user_id: @current_user.id).call
 
     redirect '/account/verify-email'
   end

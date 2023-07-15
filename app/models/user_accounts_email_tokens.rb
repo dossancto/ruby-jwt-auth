@@ -1,8 +1,19 @@
 # frozen_string_literal: true
 
-require 'sinatra/activerecord'
+## UserAccountsEmailTokens
+class UserAccountsEmailTokens
+  attr_accessor :user_id, :creted_at, :valid_for, :created_at
 
-## UserAccounts
-class UserAccountsEmailTokens < ActiveRecord::Base
-  validates_presence_of :user_id, :creted_at, :valid_for
+  def initialize(user_id, valid_for)
+    @user_id = user_id
+    @created_at = created_at
+    @valid_for = valid_for
+  end
+
+  def to_hash
+    {
+      user_id:,
+      valid_for:
+    }
+  end
 end
