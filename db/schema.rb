@@ -20,6 +20,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_022432) do
     t.string "email"
     t.boolean "email_confirmed", default: false
     t.text "roles", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["id"], name: "index_user_accounts_on_id", unique: true
   end
 
@@ -27,6 +29,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_022432) do
     t.string "user_id"
     t.datetime "creted_at", precision: nil
     t.datetime "valid_for", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["id"], name: "index_user_accounts_email_tokens_on_id", unique: true
   end
 

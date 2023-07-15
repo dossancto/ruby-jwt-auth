@@ -4,6 +4,7 @@ class CreateEmailconfirmation < ActiveRecord::Migration[7.0]
       t.string :user_id
       t.timestamp :creted_at
       t.timestamp :valid_for
+      t.timestamps
     end
 
     add_index :user_accounts_email_tokens, :id, unique: true

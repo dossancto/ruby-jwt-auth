@@ -6,6 +6,7 @@ class CreateUseraccounts < ActiveRecord::Migration[7.0]
       t.string :email, unique: true
       t.boolean :email_confirmed, default: false
       t.text :roles, array: true, default: []
+      t.timestamps
     end
 
     add_index :user_accounts, :id, unique: true
