@@ -8,10 +8,18 @@
                 </div>
                 <a href="/product">Go back</a>
 
+                <% if @product.avaible %>
                 <form action="/product/disable" method="post">
                   <input type="text" class="hidden" name="id" value="<%= @product.id %>">
                   <button type="submit">Disable</button>
                 </form>
+                <% else %>
+                <form action="/product/active" method="post">
+                  <input type="text" class="hidden" name="id" value="<%= @product.id %>">
+                  <button type="submit">Active</button>
+                </form>
+
+                <% end %>
             </div>
         </div>
     </div>

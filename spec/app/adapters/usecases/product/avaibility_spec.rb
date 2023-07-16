@@ -33,12 +33,29 @@ RSpec.describe Product do
 
       expect(product.avaible).to eq(true)
 
-      Product::Disable.new(product_id: product.id).call
+      Product::Avaibility.new(product_id: product.id).disable
 
       expect(product.class).to be(ProductRepository)
 
       new_product = Product::Select.new.with_adm.by_id(product.id)
       expect(new_product.avaible).to eq(false)
+    end
+
+    it 'Active a product' do
+      p = Product::Create.new(params: valid_product_infos).call
+      Product::Avaibility.new(product_id: p.id).disable
+      product = Product::Select.new.with_adm.by_id(p.id)
+
+      expect(product.avaible).to eq(false)
+
+      Product::Avaibility.new(product_id: product.id).active
+
+      product = Product::Select.new.with_adm.by_id(p.id)
+
+      expect(product.class).to be(ProductRepository)
+
+      new_product = Product::Select.new.with_adm.by_id(product.id)
+      expect(new_product.avaible).to eq(true)
     end
   end
 end

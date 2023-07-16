@@ -5,18 +5,26 @@ require './app/repositories/product_repository'
 require './app/adapters/validation/product/index'
 
 module Product
-  class Disable
+  class Avaibility
     def initialize(product_id:, product_model: ProductModel, product_repository: ProductRepository)
       @product_id = product_id
       @product_model = product_model
       @product_repository = product_repository
     end
 
-    def call
-      product = Product::Select.new.with_adm.by_id(@product_id)
-      @product_repository.update(product.id, { avaible: false })
+    def disable
+      change_active(false)
+    end
 
-      product
+    def active
+      change_active(true)
+    end
+
+    private
+
+    def change_active(avaible)
+      product = Product::Select.new.with_adm.by_id(@product_id)
+      @product_repository.update(product.id, { avaible: })
     end
   end
 end

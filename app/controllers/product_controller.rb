@@ -66,13 +66,11 @@ class ProductController < ApplicationController
 
   post '/disable' do
     id = params[:id]
-    @product = Product::Disable.new(product_id: id).call
+    @product = Product::Avaibility.new(product_id: id).disable
 
     return api_render_one(product) unless browser_request?
 
     if !@product || @product.avaible != false
-      require 'byebug'
-      byebug
       status 400
       flash[:error] = "Fail to disable product #{@product.name}"
       redirect back
@@ -81,6 +79,23 @@ class ProductController < ApplicationController
     status 201 # TODO: Change to correct http status code for update
     flash[:success] = 'Product disabled'
     redirect "/product/#{id}"
+  end
+
+  post '/active' do
+    id = params[:id]
+    @product = Product::Avaibility.new(product_id: id).active
+
+    return api_render_one(product) unless browser_request?
+
+    if @product&.avaible
+      status 201 # TODO: Change to correct http status code for update
+      flash[:success] = 'Product actived'
+      redirect "/product/#{id}"
+    end
+
+    status 400
+    flash[:error] = "Fail to active \"#{@product.name}\""
+    redirect back
   end
 
   get '/:id' do |id|
