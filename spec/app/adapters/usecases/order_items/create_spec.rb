@@ -29,6 +29,7 @@ RSpec.describe OrderItems::Create do
     Product::Create.new(params: {
                           name: 'Cafeteria',
                           description: 'Faz cafe',
+                          category: 'eletronic',
                           price: 122.5,
                           stock_quantity: 50
                         }).call

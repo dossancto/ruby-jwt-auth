@@ -22,6 +22,7 @@ RSpec.describe Order do
                             name: 'Cafeteria',
                             description: 'Faz cafe',
                             price: 122.5,
+                            category: 'eletronic',
                             stock_quantity: 50
                           }).call
     ]

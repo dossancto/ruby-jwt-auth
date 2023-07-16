@@ -11,6 +11,7 @@ RSpec.describe Product do
     {
       name: 'Cafeteria',
       description: 'Faz cafe',
+      category: 'eletronic',
       price: 122.5,
       stock_quantity: 5
     }
