@@ -27,6 +27,10 @@ module Order
       end
 
       order.total_ammount = a.size
+      require 'byebug'
+      byebug
+      order.save
+
       order
     end
   end
