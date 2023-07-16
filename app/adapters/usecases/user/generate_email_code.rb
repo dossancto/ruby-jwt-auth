@@ -20,10 +20,15 @@ module User
       self
     end
 
-    def call
-      valid_for = Time.now + MAX_AGE
+    def with_valid_for(time)
+      @valid_for = Time.now + time
+      self
+    end
 
-      email = UserAccountsEmailTokens.new(@user.id, valid_for)
+    def call
+      @valid_for ||= Time.now + MAX_AGE
+
+      email = UserAccountsEmailTokens.new(@user.id, @valid_for)
 
       @email_repository.create!(email.to_hash)
     end
