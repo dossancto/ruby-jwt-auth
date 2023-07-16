@@ -2,6 +2,8 @@
 
 require 'sinatra'
 require 'sinatra/base'
+require 'dotenv'
+Dotenv.load
 
 Dir.glob('./app/{helpers,controllers}/*.rb').each { |file| require file }
 
