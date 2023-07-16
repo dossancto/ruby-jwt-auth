@@ -19,8 +19,6 @@ module OrderItems
     end
 
     def call
-      return false unless can_buy?
-
       order_items = @order_items_model.new({})
 
       order_items.product_id = @product.id
@@ -31,10 +29,6 @@ module OrderItems
       order_items.subtotal = (@product.price * @quantity)
 
       @order_items_repository.create!(order_items.as_json)
-    end
-
-    def can_buy?
-      (@product.stock_quantity - 10) > @quantity
     end
   end
 end

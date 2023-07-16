@@ -6,9 +6,11 @@ class OrderModel
 
   def initialize(attributes = {})
     @id = attributes[:id]
+
     @user_id = attributes[:user_id]
     @total_ammount = attributes[:total_ammount]
     @state = attributes[:state]
+
     @created_at = attributes[:created_at]
     @updated_at = attributes[:updated_at]
   end

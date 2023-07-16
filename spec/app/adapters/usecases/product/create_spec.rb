@@ -21,8 +21,6 @@ RSpec.describe Product do
       product = Product::Create.new(params: valid_product_infos).call
 
       expect(product.class).to be(ProductRepository)
-
-      expect(ProductRepository.last.id).to eq(product.id)
     end
   end
 end

@@ -5,8 +5,7 @@ require './app/repositories/order_repository'
 
 module Order
   class Create
-    def initialize(params:, order_model: OrderModel, order_repository: OrderRepository)
-      @params = params
+    def initialize(order_model: OrderModel, order_repository: OrderRepository)
       @order_model = order_model
       @order_repository = order_repository
     end
@@ -17,8 +16,9 @@ module Order
     end
 
     def call
-      order = @order_model.new(@params)
+      order = @order_model.new({})
       order.user_id = @user.id
+      order.total_ammount = 0
       order.state ||= 'pending'
 
       @order_repository.create!(order.as_json)

@@ -10,18 +10,12 @@ require './app/models/order_model'
 require './app/repositories/order_repository'
 
 RSpec.describe Order do
-  let(:valid_order_infos) do
-    {
-      total_ammount: 50
-    }
-  end
-
   context 'Create a new order' do
     it 'New order' do
       some_user = User::Register.new(params: { user_name: 'JohnDoe', password: 'correctPassword',
                                                email: 'johndoe@example.com' }).call
 
-      order = Order::Create.new(params: valid_order_infos).from_user(some_user).call
+      order = Order::Create.new.from_user(some_user).call
 
       expect(order.class).to be(OrderRepository)
 

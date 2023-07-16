@@ -22,7 +22,7 @@ RSpec.describe OrderItems::Create do
   end
 
   let(:order) do
-    Order::Create.new(params: { total_ammount: 50 }).from_user(user).call
+    Order::Create.new.from_user(user).call
   end
 
   let(:product) do
@@ -39,6 +39,8 @@ RSpec.describe OrderItems::Create do
       order_item = OrderItems::Create.new(order_id: order.id, product:).with_quantity(10).call
 
       expect(order_item.class).to be(OrderItemsRepository)
+      expect(order_item.product_id).to eq(product.id)
+      expect(order_item.order_id).to eq(order.id)
     end
   end
 end
