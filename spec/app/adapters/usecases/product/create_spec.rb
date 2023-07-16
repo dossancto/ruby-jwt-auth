@@ -17,6 +17,16 @@ RSpec.describe Product do
     }
   end
 
+  let(:blank_product_infos) do
+    {
+      name: '',
+      description: '',
+      category: '',
+      price: '',
+      stock_quantity: ''
+    }
+  end
+
   let(:empty_product_infos) do
     {}
   end
@@ -33,7 +43,7 @@ RSpec.describe Product do
       name: 'Cafeteria',
       description: 'Faz cafe e muito mais coisas',
       category: 'eletronic',
-      price: '20.24',
+      price: '20.2a4',
       stock_quantity: -1
     }
   end
@@ -72,17 +82,25 @@ RSpec.describe Product do
     end
 
     it 'Wrong types' do
+      puts 'wong type'
       product = Product::Create.new(params: invalid_numbers_product_infos).call
+
+      expect(product.class).to be(Array)
+      expect(product.size).to eq(1)
+    end
+
+    it 'Invalid texts' do
+      product = Product::Create.new(params: invalid_text_product_infos).call
 
       expect(product.class).to be(Array)
       expect(product.size).to eq(2)
     end
 
-    it 'Invalid texts' do
-      product = Product::Create.new(params: invalid_numbers_product_infos).call
+    it 'Blank params' do
+      product = Product::Create.new(params: blank_product_infos).call
 
       expect(product.class).to be(Array)
-      expect(product.size).to eq(2)
+      expect(product.size).to eq(5)
     end
   end
 end

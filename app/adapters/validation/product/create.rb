@@ -61,9 +61,8 @@ module ProductValidation
     private
 
     def check_presence(*fields)
-      empty_fields = []
       empty_fields = fields.map do |field|
-        next if @params[field]
+        next if @params[field] && !@params[field].nil? && @params[field] != ''
 
         "Place inform a #{field}"
       end

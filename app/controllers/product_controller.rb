@@ -24,6 +24,22 @@ class ProductController < ApplicationController
 
     product = Product::Create.new(params:).call
 
-    product.to_json
+    return api_render_one(product) unless browser_request?
+
+    if product.is_a?(Array)
+      status 400
+      flash[:error] = product.join(', ')
+      redirect back
+    end
+
+    flash[:success] = 'Product Created!'
+    status 201
+    redirect "/product/#{product.id}"
+  end
+
+  get '/:id' do |id|
+    @product = Product::Select.new.by_id(id)
+
+    render! :show
   end
 end

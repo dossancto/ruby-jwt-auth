@@ -28,7 +28,7 @@ RSpec.describe OrderItems::Create do
   let(:product) do
     Product::Create.new(params: {
                           name: 'Cafeteria',
-                          description: 'Faz cafe',
+                          description: 'Faz cafe e muito mais coisas',
                           category: 'eletronic',
                           price: 122.5,
                           stock_quantity: 50

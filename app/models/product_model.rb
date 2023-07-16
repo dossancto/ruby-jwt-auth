@@ -9,8 +9,8 @@ class ProductModel
     @name = attributes[:name]
     @category = attributes[:category]
     @description = attributes[:description]
-    @price = attributes[:price]
-    @stock_quantity = attributes[:stock_quantity]
+    @price = attributes[:price].to_f
+    @stock_quantity = attributes[:stock_quantity].to_i
     @created_at = attributes[:created_at]
     @updated_at = attributes[:updated_at]
   end
