@@ -14,21 +14,15 @@ module Order
     def call
       order = Order::Create.new.from_user(@user).call
 
-      a = @products.map do |json|
+      prods = @products.map do |json|
         product = json[:product]
         quantity = json[:quantity]
 
         item = OrderItems::Create.new(order_id: order.id, product:).with_quantity(quantity).call
-        p = Product::ReduceStock.new(order: item).call
-
-        puts item.as_json
-        puts p.as_json
-        p
+        Product::ReduceStock.new(order: item).call
       end
 
-      order.total_ammount = a.size
-      require 'byebug'
-      byebug
+      order.total_ammount = prods.size
       order.save
 
       order
