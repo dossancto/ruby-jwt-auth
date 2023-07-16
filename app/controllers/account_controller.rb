@@ -65,7 +65,7 @@ class AccountController < ApplicationController
   end
 
   get '/confirm/:code' do |code|
-    unnathenticate!
+    email_unverified!
 
     err_msg = User::ConfirmEmail.new(user_id: @current_user.id).with_code(code).call
 

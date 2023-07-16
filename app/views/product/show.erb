@@ -1,0 +1,8 @@
+<%= erb :'product/_card', locals: {product: @product} %>
+
+<div>
+  <% if @current_user and @current_user.access?(roles: [:admin]) %>
+    <a href="/product/edit/<%= @product.id %>">Edit</a>
+  <% end %>
+</div>
+<a href="/product">Go back</a>

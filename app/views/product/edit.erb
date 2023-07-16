@@ -1,0 +1,26 @@
+<div class="container max-w-full mx-auto md:py-24 px-6">
+  <div class="max-w-sm mx-auto px-6">
+        <div class="relative flex flex-wrap">
+            <div class="w-full relative">
+                <div class="md:mt-6">
+                    <div class="text-center font-semibold text-black">Edit <%= @product.name %></div>
+                    <%= erb :'product/_form', locals: {method: "POST", product: @product} %>
+                </div>
+                <a href="/product">Go back</a>
+
+                <% if @product.avaible %>
+                <form action="/product/disable" method="post">
+                  <input type="text" class="hidden" name="id" value="<%= @product.id %>">
+                  <button type="submit">Disable</button>
+                </form>
+                <% else %>
+                <form action="/product/active" method="post">
+                  <input type="text" class="hidden" name="id" value="<%= @product.id %>">
+                  <button type="submit">Active</button>
+                </form>
+
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
