@@ -18,7 +18,7 @@ production:
   adapter: postgresql
   encoding: unicode
   pool: 5
-  host: <%= ENV['POSTGRES_DATABASE_HOST'] || 'db' %>
+  host: <%= ENV['POSTGRES_DATABASE_HOST'] || 'not connected' %>
   database: <%= ENV['POSTGRES_DATABASE_NAME'] || 'sinatra' %>
   username: <%= ENV['POSTGRES_DATABASE_USER'] || 'sinatra' %>
   password: <%= ENV['POSTGRES_DATABASE_PASSWORD'] || 'sinatra' %>
