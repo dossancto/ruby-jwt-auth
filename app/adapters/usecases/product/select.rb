@@ -12,5 +12,9 @@ module Product
     def by_id(id)
       @product_repository.find_by(id:)
     end
+
+    def all
+      @product_repository.all
+    end
   end
 end
