@@ -6,6 +6,7 @@ class CreateBlogPosts < ActiveRecord::Migration[7.0]
       t.string :category
       t.decimal :price, precision: 10, scale: 2, null: false
       t.integer :stock_quantity, null: false
+      t.boolean :avaible, default: true
       t.timestamps
     end
 

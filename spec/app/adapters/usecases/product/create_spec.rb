@@ -82,7 +82,6 @@ RSpec.describe Product do
     end
 
     it 'Wrong types' do
-      puts 'wong type'
       product = Product::Create.new(params: invalid_numbers_product_infos).call
 
       expect(product.class).to be(Array)

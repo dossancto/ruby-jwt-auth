@@ -40,6 +40,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_000510) do
     t.string "category"
     t.decimal "price", precision: 10, scale: 2, null: false
     t.integer "stock_quantity", null: false
+    t.boolean "avaible", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id"], name: "index_product_on_id", unique: true

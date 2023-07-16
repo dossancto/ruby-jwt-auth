@@ -5,7 +5,9 @@ require './app/adapters/usecases/product/index'
 ## AdminAreaController
 class ProductController < ApplicationController
   get '/' do
-    @products = Product::Select.new.all
+    admin = @current_user&.access?(roles: [:admin])
+    @products = Product::Select.new.with_adm(adm: admin).all
+
     render! :index
   end
 
@@ -39,7 +41,7 @@ class ProductController < ApplicationController
     authenticate!
     authorize! [:admin]
 
-    @product = Product::Select.new.by_id(id)
+    @product = Product::Select.new.with_adm.by_id(id)
     render! :edit
   end
 
@@ -62,9 +64,33 @@ class ProductController < ApplicationController
     redirect "/product/#{product.id}"
   end
 
-  get '/:id' do |id|
-    @product = Product::Select.new.by_id(id)
+  post '/disable' do
+    id = params[:id]
+    @product = Product::Disable.new(product_id: id).call
 
-    render! :show
+    return api_render_one(product) unless browser_request?
+
+    if !@product || @product.avaible != false
+      require 'byebug'
+      byebug
+      status 400
+      flash[:error] = "Fail to disable product #{@product.name}"
+      redirect back
+    end
+
+    status 201 # TODO: Change to correct http status code for update
+    flash[:success] = 'Product disabled'
+    redirect "/product/#{id}"
+  end
+
+  get '/:id' do |id|
+    admin = @current_user&.access?(roles: [:admin])
+    @product = Product::Select.new.with_adm(adm: admin).by_id(id)
+
+    return render! :show if @product
+
+    flash[:error] = 'Product not found'
+
+    redirect '/product'
   end
 end

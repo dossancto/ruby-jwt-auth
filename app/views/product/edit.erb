@@ -7,6 +7,11 @@
                     <%= erb :'product/_form', locals: {method: "POST", product: @product} %>
                 </div>
                 <a href="/product">Go back</a>
+
+                <form action="/product/disable" method="post">
+                  <input type="text" class="hidden" name="id" value="<%= @product.id %>">
+                  <button type="submit">Disable</button>
+                </form>
             </div>
         </div>
     </div>
