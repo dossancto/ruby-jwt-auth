@@ -20,8 +20,6 @@ class ProductController < ApplicationController
     authenticate!
     authorize! [:admin]
 
-    puts params
-
     product = Product::Create.new(params:).call
 
     return api_render_one(product) unless browser_request?
@@ -33,6 +31,33 @@ class ProductController < ApplicationController
     end
 
     flash[:success] = 'Product Created!'
+    status 201
+    redirect "/product/#{product.id}"
+  end
+
+  get '/edit/:id' do |id|
+    authenticate!
+    authorize! [:admin]
+
+    @product = Product::Select.new.by_id(id)
+    render! :edit
+  end
+
+  post '/edit/:id' do |id|
+    authenticate!
+    authorize! [:admin]
+
+    product = Product::Update.new(product_id: id, params:).call
+
+    return api_render_one(product) unless browser_request?
+
+    if product.is_a?(Array)
+      status 400
+      flash[:error] = product.join(', ')
+      redirect back
+    end
+
+    flash[:success] = 'Product Updated'
     status 201
     redirect "/product/#{product.id}"
   end

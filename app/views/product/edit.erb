@@ -3,8 +3,8 @@
         <div class="relative flex flex-wrap">
             <div class="w-full relative">
                 <div class="md:mt-6">
-                    <div class="text-center font-semibold text-black">Add new product</div>
-                    <%= erb :'product/_form', locals: {method: "POST"} %>
+                    <div class="text-center font-semibold text-black">Edit <%= @product.name %></div>
+                    <%= erb :'product/_form', locals: {method: "POST", product: @product} %>
                 </div>
                 <a href="/product">Go back</a>
             </div>
