@@ -5,7 +5,7 @@ const userCart = "cart_items"
 function getPageItem() {
   const product_id = document.querySelector('#product_id').value
   const price = document.querySelector('#product_price').value
-  const quantity = document.querySelector('#product_category').value
+  const quantity = document.querySelector('#product_quantity').value
 
   return {
     product_id: product_id,
