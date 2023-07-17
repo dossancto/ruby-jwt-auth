@@ -15,8 +15,11 @@ module Product
 
     def call
       @product = @product_repository.find_by(id: @order.product_id)
+      @secure_stock_capacity = (@product.stock_quantity - 10)
 
-      return false unless can_buy?
+      raise StandardError, "Product '#{@product.name}' out of stock" if @secure_stock_capacity <= 0
+
+      can_buy?
 
       new_stock = @product.stock_quantity - @quantity
       @product_repository.update(@product.id, { stock_quantity: new_stock })
@@ -24,8 +27,12 @@ module Product
       @product
     end
 
+    private
+
     def can_buy?
-      (@product.stock_quantity - 10) > @quantity
+      return true if @secure_stock_capacity >= @quantity
+
+      raise StandardError, "Only #{@secure_stock_capacity} items avaible for '#{@product.name}'".to_s
     end
   end
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'json'
+require './app/adapters/usecases/order/index'
 require './app/adapters/usecases/product/index'
 
 ## AdminAreaController
@@ -96,6 +98,33 @@ class ProductController < ApplicationController
     status 400
     flash[:error] = "Fail to active \"#{@product.name}\""
     redirect back
+  end
+
+  get '/cart' do
+    render! :cart
+  end
+
+  post '/get-card-items' do
+    ids = JSON.parse(request.body.read)
+
+    products = Product::Select.new.cards_by_id(ids)
+
+    api_render_many(products)
+  end
+
+  get '/checkout' do
+    authenticate!
+
+    render! :checkout
+  end
+
+  post '/checkout' do
+    authenticate!
+
+    ids = JSON.parse(request.body.read)
+    products = Product::Select.new.cards_by_id(ids)
+
+    @order = Order::Buy.new(user: @current_user, products:).call
   end
 
   get '/:id' do |id|

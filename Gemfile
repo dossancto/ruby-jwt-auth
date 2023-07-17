@@ -28,6 +28,8 @@ gem 'rest-client', '~> 2.1'
 
 gem 'sinatra-flash', '~> 0.3.0'
 
+gem 'simplecov', require: false, group: :test
+
 group :development do
   gem 'rack-test', '~> 2.1'
   gem 'rspec', '~> 3.12'

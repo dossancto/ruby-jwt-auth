@@ -5,6 +5,9 @@ ENV['RACK_ENV'] = 'test'
 require 'rack/test'
 require 'rspec'
 
+require 'simplecov'
+SimpleCov.start
+
 RSpec.configure do |config|
   config.include Rack::Test::Methods
   config.expect_with :rspec do |expectations|
