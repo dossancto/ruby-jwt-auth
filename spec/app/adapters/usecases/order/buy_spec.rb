@@ -24,6 +24,13 @@ RSpec.describe Order do
                             price: 122.5,
                             category: 'eletronic',
                             stock_quantity: 50
+                          }).call,
+      Product::Create.new(params: {
+                            name: 'Energético',
+                            description: 'Café de dev nutella',
+                            price: 500.12,
+                            category: 'eletronic',
+                            stock_quantity: 15
                           }).call
     ]
   end
@@ -39,6 +46,23 @@ RSpec.describe Order do
       product = Product::Select.new.by_id(orders[0].product_id)
 
       expect(product.stock_quantity).to be(products[0][:stock_quantity] - 10)
+    end
+  end
+
+  context 'Fail to buy products' do
+    it 'Insuficient products' do
+      order = Order::Buy.new(user:, products: [{ product: products[0], quantity: 100 }])
+
+      expect { order.call }.to raise_error(StandardError, "Only 40 items avaible for '#{products[0].name}'")
+    end
+
+    it 'Product out of stock' do
+      # Clear the stock
+      Order::Buy.new(user:, products: [{ product: products[0], quantity: 40 }]).call
+
+      order = Order::Buy.new(user:, products: [{ product: products[0], quantity: 10 }])
+
+      expect { order.call }.to raise_error(StandardError, "Product '#{products[0].name}' out of stock")
     end
   end
 end
