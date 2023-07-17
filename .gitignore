@@ -85,3 +85,4 @@ coverage
 
 # Optional: Build output
 public/build
+coverage
