@@ -2,7 +2,8 @@
 
 <div>
   <% if @product.avaible %>
-    <button id="add_to_cart" class="mt-3 text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black">
+    <button id="add_to_cart" class="mt-3 text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
+    flash-action flash-type="success" flash-message="Card modified">
         Add to cart
     </button>
   <% end %>

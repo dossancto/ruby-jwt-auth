@@ -1,6 +1,5 @@
 
 const userCart = "cart_items"
-console.log("FAZOELI")
 
 
 function getPageItem() {
@@ -33,7 +32,6 @@ function removeFromCart() {
   const newCart = items.filter((i) => i.product_id !== item.product_id);
 
   localStorage.setItem(userCart, JSON.stringify(newCart))
-  console.log("Item removed")
 }
 
 function addToCart() {
