@@ -15,6 +15,10 @@ module Product
       self
     end
 
+    def cards_by_id(ids)
+      @product_repository.where(avaible: true, id: ids)
+    end
+
     def by_id(id)
       return @product_repository.find_by(id:) if @is_adm
 
