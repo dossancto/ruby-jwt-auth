@@ -24,6 +24,14 @@ async function getProducts(product_ids) {
   return products
 }
 
+function setSubTotalText(subtotal){
+  const txt = document.querySelector("#cart_subtotal")
+
+  if(!txt) return
+
+  txt.textContent = `Subtotal: R$${subtotal}`
+}
+
 async function renderCards() {
   const cardsContainer = document.getElementById('cards-container');
   if (cardsContainer == undefined) return
@@ -34,8 +42,7 @@ async function renderCards() {
   const products = await getProducts(product_ids)
 
   const subtotal = sumCart(products)
-
-  document.querySelector("#cart_subtotal").textContent = `Price: R$${subtotal}`
+  setSubTotalText(subtotal)
 
   products.forEach((item) => {
     const cardHTML = createCard(item);
